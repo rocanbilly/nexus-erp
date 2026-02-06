@@ -1,0 +1,95 @@
+{
+  "strictness": 2,
+  "commentTypes": ["logic", "security"],
+  "triggerOnUpdates": true,
+  "shouldUpdateDescription": true,
+  "fixWithAI": true,
+  "statusCheck": true,
+  "instructions": "Focus on security vulnerabilities, architectural issues, and code quality. Reference rules.md and security-rules.md in the repo root for detailed standards. Flag any hardcoded secrets, SQL injection risks, or missing authentication immediately.",
+  "ignorePatterns": "*.md\n*.txt\n*.json\npackage-lock.json\n*.lock\ndist/**\nbuild/**\nnode_modules/**\n.git/**\ncoverage/**\n*.test.*\n*.spec.*\n__tests__/**",
+  "ignoreKeywords": "WIP\nDraft\n[skip review]\ngreptile-ignore",
+  "includeBranches": ["main", "master", "develop", "staging"],
+  "excludeBranches": ["draft/*", "wip/*", "experiment/*"],
+  "summarySection": {
+    "included": true,
+    "collapsible": false,
+    "defaultOpen": true
+  },
+  "issuesTableSection": {
+    "included": true,
+    "collapsible": false,
+    "defaultOpen": true
+  },
+  "confidenceScoreSection": {
+    "included": true,
+    "collapsible": true,
+    "defaultOpen": false
+  },
+  "sequenceDiagramSection": {
+    "included": true,
+    "collapsible": true,
+    "defaultOpen": false
+  },
+  "customContext": {
+    "rules": [
+      {
+        "scope": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+        "rule": "Avoid 'any' type - use specific types or 'unknown' with type guards. Always define return types for functions."
+      },
+      {
+        "scope": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+        "rule": "Never use eval(), new Function(), or innerHTML with user input. Flag dangerouslySetInnerHTML with dynamic content."
+      },
+      {
+        "scope": ["**/*.py"],
+        "rule": "Include type hints for all function parameters and return values. Use Google-style docstrings for public functions."
+      },
+      {
+        "scope": ["**/*.py"],
+        "rule": "No bare except clauses - always catch specific exceptions. Use context managers for resource management."
+      },
+      {
+        "scope": ["**/api/**", "**/routes/**", "**/controllers/**"],
+        "rule": "All API endpoints must have authentication middleware. Validate all user inputs before processing."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "SQL queries must use parameterized statements - never string concatenation. Flag any string formatting in database queries."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "No hardcoded secrets, API keys, passwords, or credentials. Check for patterns like 'password=', 'api_key=', 'secret=', Bearer tokens."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "Error messages must not leak stack traces, SQL queries, or internal paths. Log detailed errors server-side only."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "Functions over 50 lines or with more than 4 parameters should be flagged for refactoring."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "TODO comments must include a ticket number (TODO(PROJ-123)). No commented-out code blocks."
+      }
+    ],
+    "files": [
+      {
+        "scope": ["**/*"],
+        "path": "rules.md",
+        "description": "Code quality and architectural rules"
+      },
+      {
+        "scope": ["**/*"],
+        "path": "security-rules.md",
+        "description": "OWASP-aligned security rules"
+      }
+    ],
+    "other": [
+      {
+        "scope": ["**/*"],
+        "content": "This codebase follows clean architecture principles. Business logic should not live in controllers or UI components. Use services/hooks for logic, repositories for data access."
+      }
+    ]
+  }
+}
