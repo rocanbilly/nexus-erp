@@ -1,0 +1,61 @@
+{
+  "strictness": 2,
+  "commentTypes": ["logic", "security"],
+  "triggerOnUpdates": true,
+  "shouldUpdateDescription": true,
+  "fixWithAI": true,
+  "statusCheck": true,
+  "instructions": "Focus on security vulnerabilities, architectural issues, and code quality. Flag any hardcoded secrets, SQL injection risks, or missing authentication immediately. This is an ERP system - pay special attention to financial calculation accuracy and data integrity.",
+  "ignorePatterns": "*.md\n*.txt\npackage-lock.json\n*.lock\ndist/**\nbuild/**\nnode_modules/**\n.git/**\ncoverage/**\n*.test.*\n*.spec.*\n__tests__/**\ndata/*.db",
+  "ignoreKeywords": "WIP\nDraft\n[skip review]\ngreptile-ignore",
+  "includeBranches": ["main", "master", "develop"],
+  "excludeBranches": ["draft/*", "wip/*", "experiment/*"],
+  "summarySection": {
+    "included": true,
+    "collapsible": false,
+    "defaultOpen": true
+  },
+  "issuesTableSection": {
+    "included": true,
+    "collapsible": false,
+    "defaultOpen": true
+  },
+  "confidenceScoreSection": {
+    "included": true,
+    "collapsible": true,
+    "defaultOpen": false
+  },
+  "sequenceDiagramSection": {
+    "included": true,
+    "collapsible": true,
+    "defaultOpen": false
+  },
+  "customContext": {
+    "rules": [
+      {
+        "scope": ["**/*.ts", "**/*.tsx"],
+        "rule": "Avoid 'any' type - use specific types or 'unknown' with type guards. Always define return types for functions."
+      },
+      {
+        "scope": ["**/*.ts", "**/*.tsx"],
+        "rule": "Never use eval(), new Function(), or innerHTML with user input. Flag dangerouslySetInnerHTML with dynamic content."
+      },
+      {
+        "scope": ["**/server/**", "**/routes/**"],
+        "rule": "All financial calculations must use precise decimal handling. Validate all user inputs before processing."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "SQL queries must use parameterized statements - never string concatenation. Flag any string formatting in database queries."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "No hardcoded secrets, API keys, passwords, or credentials."
+      },
+      {
+        "scope": ["**/*"],
+        "rule": "Error messages must not leak stack traces, SQL queries, or internal paths."
+      }
+    ]
+  }
+}
